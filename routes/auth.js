@@ -30,11 +30,17 @@ router.put(
       .withMessage(
         "Password should be between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character."
       ),
-    body("name").trim().not().isEmpty(),
+    body("name").trim().not().isEmpty().custom((value, { req }) => {
+      return User.findOne({ name: value }).then((userDoc) => {
+        if (userDoc) {
+          return Promise.reject("Current name already exists!");
+        }
+      });
+    }),
   ],
   authController.signup
 );
 
-router.get('/login', authController.login); 
+router.post('/login', authController.login); 
 
 module.exports = router;
