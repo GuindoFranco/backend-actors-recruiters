@@ -3,7 +3,7 @@ import { body } from 'express-validator/check';
 
 import User from '../models/user';
 
-import authController from '../controllers/auth';
+import { signup, login } from '../controllers/auth';
 
 const router = Router();
 
@@ -16,7 +16,7 @@ router.put(
       .isEmail()
       .withMessage("Please enter a valid email.")
       .custom((value, { req }) => {
-        return User.findOne({ email: value }).then((userDoc: object) => {
+        return User.findOne({ email: value }).then((userDoc: any) => {
           if (userDoc) {
             return Promise.reject("E-mail address already exists!");
           }
@@ -31,16 +31,16 @@ router.put(
         "Password should be between 8 to 15 characters which contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character."
       ),
     body("name").trim().not().isEmpty().custom((value, { req }) => {
-      return User.findOne({ name: value }).then((userDoc: object) => {
+      return User.findOne({ name: value }).then((userDoc: any) => {
         if (userDoc) {
           return Promise.reject("Current name already exists!");
         }
       });
     }),
   ],
-  authController.signup
+  signup
 );
 
-router.post('/login', authController.login); 
+router.post('/login', login);
 
 export default router;

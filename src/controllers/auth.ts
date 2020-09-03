@@ -1,17 +1,15 @@
 import User from '../models/user';
 
+import { Response, Request } from 'express';
 import { validationResult } from 'express-validator/check';
 import bcrypt from 'bcrypt';
 import jsonWebToken from 'jsonwebtoken';
 
 const secretCreatorToken = 'Super*9)Secret159Creator!$Token';
 
-const auth: any = {};
+interface RequestBody { email: string, name: string, password: string };
 
-type RequestBody = { email: string, name:string, password: string};
-type RequestSignup = { body: RequestBody};
-
-auth.signup = (req: RequestSignup, res: any, next: Function) => {
+const signup = (req: Request, res: Response, next: Function) => {
   const errors = validationResult(req);
   const body = req.body as RequestBody;
   if (!errors.isEmpty()) {
@@ -33,7 +31,7 @@ auth.signup = (req: RequestSignup, res: any, next: Function) => {
       });
       return user.save();
     })
-    .then((result: {_id: string}) => {
+    .then((result: { _id: string }) => {
       res.status(201).json({ message: 'User created!', userId: result._id });
     })
     .catch((err: { statusCode: number }) => {
@@ -44,10 +42,10 @@ auth.signup = (req: RequestSignup, res: any, next: Function) => {
     });
 };
 
-type RequestLogin = { body: {user: string, password: string}};
-type LoadedUser = { email: string, name: string, password: string, _id: string };
+interface RequestLogin { body: { user: string, password: string } };
+interface LoadedUser { email: string, name: string, password: string, _id: string };
 
-auth.login = (req: RequestLogin, res: any, next: Function) => {
+const login = (req: RequestLogin, res: any, next: Function) => {
   const user: string = req.body.user;
   const password: string = req.body.password;
   let loadedUser: LoadedUser;
@@ -74,7 +72,7 @@ auth.login = (req: RequestLogin, res: any, next: Function) => {
       }, secretCreatorToken, { expiresIn: '1h' });
       res.status(200).json({ token: token, userId: loadedUser._id.toString() });
     })
-    .catch((err: {statusCode: number}) => {
+    .catch((err: { statusCode: number }) => {
       if (!err.statusCode) {
         err.statusCode = 500;
       }
@@ -82,4 +80,4 @@ auth.login = (req: RequestLogin, res: any, next: Function) => {
     });
 };
 
-export default auth;
+export { signup, login };

@@ -12,12 +12,12 @@ app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 
-app.use((error:any, req:any, res:any, next:Function) => {
+app.use((error: any, req: any, res: any, next: Function) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
-  res.status(status).json({ message: message, data: data});
+  res.status(status).json({ message: message, data: data });
 });
 
 mongoose
