@@ -50,7 +50,7 @@ const login = (req: RequestLogin, res: any, next: Function) => {
   const password: string = req.body.password;
   let loadedUser: LoadedUser;
   User.findOne({ $or: [{ 'email': user }, { 'name': user }] })
-    .then((user: LoadedUser) => {
+    .then((user) => {
       if (!user) {
         const error: any = new Error('A user with this email/name could not be found.');
         error.statusCode = 401;
