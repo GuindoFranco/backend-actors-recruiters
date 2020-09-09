@@ -1,8 +1,8 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+import express from 'express';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
 
-const authRoutes = require('./routes/auth');
+import authRoutes from './routes/auth';
 
 const port = 3000;
 
@@ -12,12 +12,12 @@ app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 
-app.use((error, req, res, next) => {
+app.use((error: any, req: any, res: any, next: Function) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
   const data = error.data;
-  res.status(status).json({ message: message, data: data});
+  res.status(status).json({ message: message, data: data });
 });
 
 mongoose
