@@ -8,8 +8,8 @@ const check_1 = require("express-validator/check");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const secretCreatorToken = 'Super*9)Secret159Creator!$Token';
-const auth = {};
-auth.signup = (req, res, next) => {
+;
+const signup = (req, res, next) => {
     const errors = check_1.validationResult(req);
     const body = req.body;
     if (!errors.isEmpty()) {
@@ -41,7 +41,10 @@ auth.signup = (req, res, next) => {
         next(err);
     });
 };
-auth.login = (req, res, next) => {
+exports.signup = signup;
+;
+;
+const login = (req, res, next) => {
     const user = req.body.user;
     const password = req.body.password;
     let loadedUser;
@@ -75,4 +78,4 @@ auth.login = (req, res, next) => {
         next(err);
     });
 };
-exports.default = auth;
+exports.login = login;
