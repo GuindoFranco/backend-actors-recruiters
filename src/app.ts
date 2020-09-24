@@ -22,7 +22,7 @@ app.use((error: any, req: any, res: any, next: Function) => {
 
 mongoose
   .connect(
-    "mongodb+srv://usrTalentApp:SEAikcSKnUK2Y93@cluster0.zy1bb.mongodb.net/devDataBase?retryWrites=true&w=majority"
+    "mongodb+srv://@cluster0.zy1bb.mongodb.net/devDataBase?retryWrites=true&w=majority"
   )
   .then(result => {
     app.listen(port);
